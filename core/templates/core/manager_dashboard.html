@@ -101,6 +101,23 @@
   {% endfor %}
 </ul>
 
+<h3>Approved Accounts</h3>
+<ul>
+  {% for acct in approved_accounts %}
+    <li>
+      <strong>{{ acct.user.username }}</strong> - Account #: {{ acct.account_number }} - ${{ acct.balance }}
+      {% if acct.is_frozen %}
+        (Frozen)
+      {% endif %}
+      <br>
+      Email: {{ acct.user.email }}<br>
+      Customer Since: {{ acct.user.date_joined|date:"Y-m-d" }}
+    </li>
+  {% empty %}
+    <li>No approved accounts</li>
+  {% endfor %}
+</ul>
+
 <h3>All Customers</h3>
 <ul>
   {% for acct in customers %}

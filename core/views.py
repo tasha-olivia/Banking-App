@@ -18,13 +18,28 @@ def root_redirect(request):
 
 def home(request):
     return render(request, 'core/home.html')
+import random
+from .models import Account
+
+def generate_account_number():
+    while True:
+        number = str(random.randint(1000000000, 9999999999))  # 10-digit number
+        if not Account.objects.filter(account_number=number).exists():
+            return number
 
 def register_customer_view(request):
     if request.method == 'POST':
         form = CustomerRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Log them in immediately
+            # Create an account for the new user, pending approval
+            account_number = generate_account_number()
+            Account.objects.create(
+                user=user,
+                account_number=account_number,
+                balance=5000,
+                is_approved=False
+)
             return redirect('login')
     else:
         form = CustomerRegistrationForm()
@@ -62,6 +77,15 @@ def customer_login_view(request):
         if form.is_valid():
             user = form.get_user()
             if (hasattr(user, 'is_customer') and user.is_customer) or user.is_superuser:
+                # Check if the account is approved
+                try:
+                    account = Account.objects.get(user=user)
+                    if not account.is_approved:
+                        messages.error(request, "Your account has not been approved by the admin yet.")
+                        return render(request, 'core/customer_login.html', {'form': form})
+                except Account.DoesNotExist:
+                    messages.error(request, "No account found for this user.")
+                    return render(request, 'core/customer_login.html', {'form': form})
                 login(request, user)
                 return redirect('customer_dashboard')
             else:
@@ -71,7 +95,7 @@ def customer_login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, 'core/customer_login.html', {'form': form})
-
+    
 def manager_login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -155,11 +179,13 @@ def manager_dashboard(request):
         return redirect('home')
     pending_accounts = Account.objects.filter(is_approved=False)
     customers = Account.objects.filter(is_approved=True)
+    approved_accounts = Account.objects.filter(is_approved=True)  # Add this line
     loans = LoanRequest.objects.all().order_by('-created_at')
     transactions = Transaction.objects.all().order_by('-timestamp')[:50]  # Last 50 transactions for audit
     return render(request, 'core/manager_dashboard.html', {
         'pending_accounts': pending_accounts,
         'customers': customers,
+        'approved_accounts': approved_accounts,  # Pass to template
         'loans': loans,
         'transactions': transactions,
     })
@@ -243,12 +269,12 @@ def approve_loan(request, id):
     loan.account.balance += loan.amount
     loan.account.save()
     loan.save()
-    return HttpResponse("Loan Approved")
+    return redirect('manager_dashboard')
 
 @login_required
 def deny_loan(request, id):
     loan = get_object_or_404(LoanRequest, id=id)
     loan.is_approved = False
     loan.save()
-    return HttpResponse("Loan Denied")
+    return redirect('manager_dashboard')
 
