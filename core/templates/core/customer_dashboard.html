@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<h2>Account Dashboard</h2>
+<p>Account #: {{ account.account_number }}</p>
+<p>Balance: ${{ account.balance }}</p>
+
+<h3>Recent Transactions</h3>
+<ul>
+  {% for txn in transactions %}
+    <li>{{ txn.timestamp }}: ${{ txn.amount }} 
+        {% if txn.sender == account %}sent to{% else %}received from{% endif %}
+        {% if txn.sender == account %}
+            {{ txn.receiver.account_number }}
+        {% else %}
+            {{ txn.sender.account_number }}
+        {% endif %}
+    </li>
+  {% empty %}
+    <li>No transactions</li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'transfer_funds' %}">Make a Transfer</a>
+
+{% endblock %}

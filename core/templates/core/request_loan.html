@@ -1,0 +1,43 @@
+<style> 
+    form {
+  margin: 1em 0;
+}
+form input, form textarea, form button {
+  display: block;
+  width: 100%;
+  max-width: 350px;
+  margin-bottom: 1em;
+  padding: 0.5em;
+  border: 1px solid #EFEFEF;
+  border-radius: 4px;
+  font-size: 1em;
+}
+form button {
+  background: #D2001A;
+  color: #FFFAE7;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s, color 0.2s;
+}
+form button:hover {
+  background: #FFDE00;
+  color: #D2001A;
+}
+</style>
+
+{% extends 'core/base.html' %}
+{% block content %}
+<h2>Apply for a Loan</h2>
+{% if error %}
+  <div style="color: red;">{{ error }}</div>
+{% endif %}
+{% if success %}
+  <div style="color: green;">{{ success }}</div>
+{% endif %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Apply</button>
+</form>
+{% endblock %}

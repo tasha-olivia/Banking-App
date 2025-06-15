@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Banking App{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'core/customer_navbar.css' %}">
+    {% block extra_css %}{% endblock %}   
+</head>
+<body>
+
+<nav class="customer-navbar">
+  <div class="nav-container">
+    <div class="nav-left">
+      <a href="#" class="brand">Admin Dashboard</a>
+    </div>
+    <div class="nav-right">
+      <ul>
+        <!-- <li><a href="{% url 'customer_dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'transfer_funds' %}">Transfer Funds</a></li>
+        <li><a href="{% url 'request_loan' %}">Request Loan</a></li> -->
+        <li><a href="#">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="content">
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+<style>
+:root {
+  --c1: #EFEFEF;
+  --c2: #FFFAE7;
+  --c3: #FFDE00;
+  --c4: #D2001A;
+}
+.manager-dashboard h2,
+.manager-dashboard h3 {
+  color: var(--c4);
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+.manager-dashboard ul {
+  background: var(--c2);
+  border-radius: 8px;
+  padding: 1em 1.5em;
+  margin-bottom: 2em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.manager-dashboard ul li {
+  margin-bottom: 1em;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid var(--c1);
+  font-size: 1.08em;
+}
+.manager-dashboard ul li:last-child {
+  border-bottom: none;
+}
+.manager-dashboard form button {
+  background: var(--c4);
+  color: var(--c2);
+  border: none;
+  border-radius: 4px;
+  padding: 0.4em 1.2em;
+  margin-left: 0.5em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.manager-dashboard form button:hover {
+  background: var(--c3);
+  color: var(--c4);
+}
+.manager-dashboard li strong, .manager-dashboard .frozen {
+  color: var(--c4);
+}
+.manager-dashboard table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  background: var(--c2) !important;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.manager-dashboard th, .manager-dashboard td {
+  color: #222; /* Black or dark gray text */
+  padding: 0.7em 1em;
+  border: 1px solid var(--c4);
+  text-align: left;
+}
+.manager-dashboard th {
+  background: var(--c3);
+  color: var(--c4);
+  font-weight: bold;
+}
+.manager-dashboard tr:nth-child(even) {
+  background: var(--c1);
+}
+@media (max-width: 700px) {
+  .manager-dashboard ul, .manager-dashboard table {
+    font-size: 0.97em;
+    padding: 0.5em;
+  }
+  .manager-dashboard th, .manager-dashboard td {
+    padding: 0.5em 0.5em;
+  }
+}
+</style>
+{% extends 'core/adminbase.html' %}
+{% block content %}
+<div class="manager-dashboard"> 
+
+<h2>Manager Dashboard</h2>
+
+<h3>Pending Account Approvals</h3>
+<ul>
+  {% for acct in pending_accounts %}
+    <li>
+      {{ acct.user.username }} - {{ acct.account_number }}
+      <form action="{% url 'approve_account' acct.id %}" method="post" style="display:inline">{% csrf_token %}
+        <button type="submit">Approve</button>
+      </form>
+      <form action="{% url 'deny_account' acct.id %}" method="post" style="display:inline">{% csrf_token %}
+        <button type="submit">Deny</button>
+      </form>
+    </li>
+  {% empty %}
+    <li>No pending accounts</li>
+  {% endfor %}
+</ul>
+
+<h3>All Customers</h3>
+<ul>
+  {% for acct in customers %}
+    <li>
+      <strong>{{ acct.user.username }}</strong> - Account #: {{ acct.account_number }} - ${{ acct.balance }}
+      {% if acct.is_frozen %}
+        (Frozen)
+        <form action="{% url 'unfreeze_account' acct.id %}" method="post" style="display:inline">{% csrf_token %}
+          <button type="submit">Unfreeze</button>
+        </form>
+      {% else %}
+        <form action="{% url 'freeze_account' acct.id %}" method="post" style="display:inline">{% csrf_token %}
+          <button type="submit">Freeze</button>
+        </form>
+      {% endif %}
+      <br>
+      Email: {{ acct.user.email }}<br>
+      Customer Since: {{ acct.user.date_joined|date:"Y-m-d" }}
+    </li>
+  {% endfor %}
+</ul>
+
+<h3>Pending Loan Requests</h3>
+<ul>
+  {% for loan in loans %}
+    <li>
+      {{ loan.account.user.username }} requested ${{ loan.amount }} for "{{ loan.reason }}"
+      {% if loan.is_approved %}
+        - <strong>Approved</strong>
+      {% elif loan.is_approved is not None %}
+        - <strong>Denied</strong>
+      {% else %}
+        <form action="{% url 'approve_loan' loan.id %}" method="post" style="display:inline">{% csrf_token %}
+          <button type="submit">Approve</button>
+        </form>
+        <form action="{% url 'deny_loan' loan.id %}" method="post" style="display:inline">{% csrf_token %}
+          <button type="submit">Deny</button>
+        </form>
+      {% endif %}
+    </li>
+  {% empty %}
+    <li>No loan requests</li>
+  {% endfor %}
+</ul>
+
+<h3>Recent Transactions (Audit)</h3>
+<table border="1">
+  <tr>
+    <th>Date</th>
+    <th>Sender</th>
+    <th>Receiver</th>
+    <th>Amount</th>
+  </tr>
+  {% for txn in transactions %}
+    <tr>
+      <td>{{ txn.timestamp }}</td>
+      <td>{{ txn.sender.account_number }} ({{ txn.sender.user.username }})</td>
+      <td>{{ txn.receiver.account_number }} ({{ txn.receiver.user.username }})</td>
+      <td>${{ txn.amount }}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="4">No transactions</td></tr>
+  {% endfor %}
+</table>
+</div>
+
+{% endblock %}

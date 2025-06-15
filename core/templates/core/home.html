@@ -1,0 +1,8 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<h1>Welcome to SecureBank</h1>
+<p><a href="{% url 'login' %}">Login</a> or <a href="{% url 'register_customer' %}">Register (Customer)</a></p>
+<p><a href="{% url 'register_manager' %}">Register (Manager)</a></p>
+
+{% endblock %}

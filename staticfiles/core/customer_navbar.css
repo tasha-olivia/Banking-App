@@ -1,0 +1,228 @@
+:root {
+  --c1: #EFEFEF;
+  --c2: #FFFAE7;
+  --c3: #FFDE00;
+  --c4: #D2001A;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--c4);
+  color: var(--c2);
+}
+
+/* Nav container setup */
+.customer-navbar {
+  background-color: var(--c4);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.nav-left .brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--c1);
+  text-decoration: none;
+}
+
+.nav-left .brand:hover {
+  color: var(--c3);
+}
+
+/* Right-side nav items */
+.nav-right ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-right li {
+  display: inline;
+}
+
+.nav-right a {
+  text-decoration: none;
+  color: var(--c1);
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-right a:hover {
+  background-color: var(--c3);
+  color: black;
+}
+
+/* Main content area */
+.content {
+  padding: 2rem;
+  background-color: var(--c2);
+  color: black;
+  min-height: 90vh;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  margin-top: 1rem;
+}
+
+
+/* Color palette */
+:root {
+  --c1: #EFEFEF;
+  --c2: #FFFAE7;
+  --c3: #FFDE00;
+  --c4: #D2001A;
+}
+
+/* General body styles */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--c1);
+  color: #222;
+}
+
+/* Navbar styles */
+.customer-navbar {
+  background: var(--c4);
+  padding: 0;
+  height: 70px;
+  width: 100vw;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+.customer-navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+.customer-navbar li {
+  margin: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.customer-navbar a {
+  color: var(--c2);
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0 2em;
+  border-radius: 0;
+  transition: background 0.2s, color 0.2s;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.customer-navbar a:hover {
+  background: var(--c3);
+  color: var(--c4);
+}
+
+/* Content area */
+.content {
+  max-width: 900px;
+  margin: 2em auto;
+  background: var(--c2);
+  padding: 2em;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+/* Headings */
+h2, h3 {
+  color: var(--c4);
+  margin-top: 0;
+}
+
+/* Forms */
+form {
+  margin: 1em 0;
+}
+form input, form select, form textarea, form button {
+  display: block;
+  width: 100%;
+  max-width: 350px;
+  margin-bottom: 1em;
+  padding: 0.5em;
+  border: 1px solid var(--c1);
+  border-radius: 4px;
+  font-size: 1em;
+}
+form button {
+  background: var(--c4);
+  color: var(--c2);
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s, color 0.2s;
+}
+form button:hover {
+  background: var(--c3);
+  color: var(--c4);
+}
+
+/* Lists */
+ul {
+  padding-left: 1.2em;
+}
+ul li {
+  margin-bottom: 0.5em;
+}
+
+/* Tables (for manager dashboard) */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  background: var(--c1);
+}
+th, td {
+  padding: 0.6em 1em;
+  border: 1px solid var(--c4);
+  text-align: left;
+}
+th {
+  background: var(--c3);
+  color: var(--c4);
+}
+tr:nth-child(even) {
+  background: var(--c2);
+}
+
+/* Status indicators */
+.frozen {
+  color: var(--c4);
+  font-weight: bold;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .content {
+    padding: 1em;
+    max-width: 98vw;
+  }
+  .customer-navbar a {
+    padding: 0 1em;
+    font-size: 0.95em;
+  }
+  table, th, td {
+    font-size: 0.95em;
+  }
+}
