@@ -8,4 +8,4 @@ services:
       - key: DJANGO_SETTINGS_MODULE
         value: banking_app.settings
       - key: SECRET_KEY
-        value: your-secret-key
+        value: django-insecure-en8-l!u2n3!d#%n-3m0&vrfqos7w9zd26bh(ui77+3@x+ikse7

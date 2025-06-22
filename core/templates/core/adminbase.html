@@ -5,7 +5,91 @@
     <meta charset="UTF-8">
     <title>{% block title %}Banking App{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'core/customer_navbar.css' %}">
-    {% block extra_css %}{% endblock %}   
+    {% block extra_css %}{% endblock %} 
+    <style> 
+      :root {
+  --c1: #EFEFEF;
+  --c2: #FFFAE7;
+  --c3: #FFDE00;
+  --c4: #D2001A;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--c4);
+  color: var(--c2);
+}
+
+/* Nav container setup */
+.customer-navbar {
+  background-color: var(--c4);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.nav-left .brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--c1);
+  text-decoration: none;
+}
+
+.nav-left .brand:hover {
+  color: var(--c3);
+}
+
+/* Right-side nav items */
+.nav-right ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-right li {
+  display: inline;
+}
+
+.nav-right a {
+  text-decoration: none;
+  color: var(--c1);
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-right a:hover {
+  background-color: var(--c3);
+  color: black;
+}
+
+/* Main content area */
+.content {
+  padding: 2rem;
+  background-color: var(--c2);
+  color: black;
+  min-height: 90vh;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  margin-top: 1rem;
+}
+
+
+
+    </style>  
 </head>
 <body>
 
