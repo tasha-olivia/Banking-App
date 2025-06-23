@@ -9,15 +9,15 @@ class CoreConfig(AppConfig):
         from django.db.utils import OperationalError
         User = get_user_model()
         try:
-            if not User.objects.filter(username='manager').exists():
-                user = User.objects.create_user(
-                    username='manager',
-                    email='manager@gmail.com',
-                    password='AdminPassword'
-                )
-                user.is_manager = True
-                user.is_staff = True  # Optional: allows access to Django admin
-                user.save()
+            user, created = User.objects.get_or_create(
+                username='manager',
+                defaults={
+                    'email': 'manager@gmail.com',
+                }
+            )
+            user.is_manager = True
+            user.is_staff = True
+            user.set_password('AdminPassword')  # Always set password
+            user.save()
         except OperationalError:
-            # Database might not be ready yet (e.g., during migrate)
             pass
